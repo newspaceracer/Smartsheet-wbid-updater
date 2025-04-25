@@ -2,8 +2,8 @@ name: Run WBID Updater
 
 on:
   schedule:
-    - cron: "*/30 * * * *" # every 30 minutes
-  workflow_dispatch: # allow manual trigger from GitHub UI
+    - cron: "*/30 * * * *" # Every 30 minutes
+  workflow_dispatch: # Allow manual run
 
 jobs:
   run-script:
@@ -16,6 +16,14 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
