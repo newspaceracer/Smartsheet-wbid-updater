@@ -1,0 +1,32 @@
+name: Run WBID Updater
+
+on:
+  schedule:
+    - cron: "*/30 * * * *" # every 30 minutes
+  workflow_dispatch: # allow manual trigger from GitHub UI
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run WBID Updater Script
+        env:
+          SMARTSHEET_API_TOKEN: ${{ secrets.SMARTSHEET_API_TOKEN }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          LAT_COLUMN_NAME: ${{ secrets.LAT_COLUMN_NAME }}
+          LON_COLUMN_NAME: ${{ secrets.LON_COLUMN_NAME }}
+          WBID_COLUMN_NAME: ${{ secrets.WBID_COLUMN_NAME }}
+        run: |
+          python smartsheet_wbid_updater.py
