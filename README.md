@@ -33,7 +33,12 @@ For each row in your Smartsheet:
 ## 📦 Setup Instructions
 
 1. **Clone or download this repository**
-   git clone https://github.com/YOUR-USERNAME/smartsheet-wbid-updater.git cd smartsheet-wbid-updater
+
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/smartsheet-wbid-updater.git
+   cd smartsheet-wbid-updater
+
+   ```
 
 2. **Create a virtual environment** (optional but recommended)
    python3 -m venv venv source venv/bin/activate
@@ -86,3 +91,45 @@ No other rows are touched.
 ## Other notes
 
 - This repo includes `.gitignore` for `.env` if you initialize Git here.
+
+## ⚙️ Automated Runs with GitHub Actions
+
+This script is configured to run automatically every **30 minutes** using [GitHub Actions](https://github.com/features/actions). You can also trigger it manually from the GitHub UI.
+
+### 🕒 Schedule
+
+The script runs on a schedule using a cron job:
+Every 30 minutes
+
+You don’t need to leave your computer on — it runs in the cloud.
+
+---
+
+### 🧷 Secrets Setup (Required for GitHub Actions)
+
+To run the script automatically, you must set the following **secrets** in your GitHub repo:
+
+Go to:  
+**Repository → Settings → Secrets and variables → Actions → New repository secret**
+
+Add these:
+
+| Secret Name            | Example Value         |
+| ---------------------- | --------------------- |
+| `SMARTSHEET_API_TOKEN` | `act-1234-your-token` |
+| `SHEET_ID`             | `1234567890123456`    |
+| `LAT_COLUMN_NAME`      | `Latitude`            |
+| `LON_COLUMN_NAME`      | `Longitude`           |
+| `WBID_COLUMN_NAME`     | `WBID`                |
+
+Do **not** include these in your `.env` file if using GitHub Actions. They are passed securely via environment variables.
+
+---
+
+### ▶️ Manual Trigger (Optional)
+
+You can also manually run the script from the GitHub web interface:
+
+1. Go to the **Actions** tab of your repository
+2. Select the workflow titled **"Run WBID Updater"**
+3. Click **"Run workflow"** → this will start it instantly
